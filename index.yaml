@@ -3,12 +3,12 @@ entries:
   micro-poc-0:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2021-09-06T19:13:55.4935425+05:30"
+    created: "2021-09-06T19:18:05.9825356+05:30"
     description: A Helm chart for Kubernetes
-    digest: e4aa53cd1978c1cddc76bd4d626b9952d9f1372482b46dd37c0a11949c2c8117
+    digest: 22ead46139ec7d839bbe3122ed0e9555d111bdef74d331aabe157a1dbc7aa746
     name: micro-poc-0
     type: application
     urls:
     - micro-poc-0-0.1.0.tgz
     version: 0.1.0
-generated: "2021-09-06T19:13:55.4925422+05:30"
+generated: "2021-09-06T19:18:05.980909+05:30"
