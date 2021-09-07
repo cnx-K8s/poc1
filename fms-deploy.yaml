@@ -1,0 +1,41 @@
+# Create the Pod
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fms-deploy
+  labels:
+    app: fms-ge
+spec: # for deployment
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fms-ge
+  template:
+    metadata:
+      labels:
+        app: fms-ge
+    spec: # for pod
+      containers:
+      - image: 1017860556361/fms_ge:v0.0.0
+        name: fms-ge
+        ports:
+         - containerPort: 9090 
+
+
+# Create the Internal Service  
+# '---' by this syntex can create multile documants in yaml fle 
+
+---    
+apiVersion: v1
+kind: Service
+metadata:
+  name: fms-ge-svc
+spec: # for deployment
+  selector:
+      app: fms-ge
+  type: LoadBalancer	  
+  ports:
+     - protocol: TCP
+       port: 9090
+       targetPort: 9090
