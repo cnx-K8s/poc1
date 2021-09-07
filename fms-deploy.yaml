@@ -25,7 +25,7 @@ spec: # for deployment
         app: fms-ge
     spec: # for pod
       containers:
-	  - name: fms-ge
+      - name: fms-ge
         image: 1017860556361/fms_ge:v0.0.0
         resources: 
           limits:
@@ -50,7 +50,7 @@ metadata:
 spec: # for deployment
   selector:
       app: fms-ge
-  type: LoadBalancer	  
+  type: LoadBalancer    
   ports:
      - protocol: TCP
        port: 9090
