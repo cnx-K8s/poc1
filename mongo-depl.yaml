@@ -1,0 +1,161 @@
+# ******************************************************#
+# ---           Start Mongo DB Config                ---#
+
+# Create the Screat
+---  
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mongodb-secret
+type: Opaque
+data:
+  mongo-username: YWRtaW4=
+  mongo-password: dXNlcjEyMw==    
+  
+# Create the Pod
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-depl
+  labels:
+    app: mongodb-ns
+spec: # for deployment
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb-ns
+  template:
+    metadata:
+      labels:
+        app: mongodb-ns
+    spec: # for pod
+      containers:
+      - image: mongo
+        name: mongodb-ns
+        ports:
+         - containerPort: 27017
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom: 
+            secretKeyRef: 
+              name: mongodb-secret
+              key: mongo-username
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom: 
+            secretKeyRef: 
+              name: mongodb-secret
+              key: mongo-password 
+
+
+# Create the Internal Service  
+# '---' by this syntex can create multile documants in yaml fle 
+
+---    
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-service-ns
+spec: # for deployment
+  selector:
+      app: mongodb-ns
+  ports:
+     - protocol: TCP
+       port: 27017
+       targetPort: 27017    
+       
+# ******************************************************#
+# ---           End Mongo DB Config                  ---#           
+ 
+
+
+#-----------------------------------------------------------------------------------------------------------# 
+#              **************************************************************************
+#-----------------------------------------------------------------------------------------------------------# 
+ 
+
+
+
+# ******************************************************#
+# ---           Start Mongo Express Config          --- #
+
+ # Create the ConfigMap
+---    
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongodb-configmap
+data:
+  db_url: mongodb-service-ns
+ 
+ # Create the Pod
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-express-depl
+  labels:
+    app: mongo-express
+spec: # for deployment
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo-express
+  template:
+    metadata:
+      labels:
+        app: mongo-express
+    spec: # for pod
+      containers:
+      - image: mongo-express
+        name: mongo-express
+        ports:
+         - containerPort: 8081
+        env:
+        - name: ME_CONFIG_MONGODB_ADMINUSERNAME
+          valueFrom: 
+            secretKeyRef: 
+              name: mongodb-secret
+              key: mongo-username
+        - name: ME_CONFIG_MONGODB_ADMINPASSWORD
+          valueFrom: 
+            secretKeyRef: 
+              name: mongodb-secret
+              key: mongo-password 
+        - name: ME_CONFIG_MONGODB_SERVER
+          valueFrom: 
+            configMapKeyRef: 
+              name: mongodb-configmap
+              key: db_url        
+ 
+
+# Create the External Service  
+# '---' by this syntex can create multile documants in yaml fle 
+
+---    
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-express-service
+spec: # for deployment
+  selector:
+      app: mongo-express
+  type: LoadBalancer    
+  ports:
+     - protocol: TCP
+       port: 8081
+       targetPort: 8081
+       nodePort: 30000          # this is the external port 
+                                # port range 30000 to 32767  
+                                
+                                
+# ******************************************************#
+# ---           End Mongo Express Config            --- # 
+
+
+#-----------------------------------------------------------------------------------------------------------# 
+#              **************************************************************************
+#-----------------------------------------------------------------------------------------------------------# 
+
+
+                                     
