@@ -1,9 +1,17 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: fms-app
+  labels:
+    name: fms-app
+
 # Create the Pod
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: fms-deploy
+  namespace: fms-app
   labels:
     app: fms-ge
 spec: # for deployment
@@ -17,8 +25,15 @@ spec: # for deployment
         app: fms-ge
     spec: # for pod
       containers:
-      - image: 1017860556361/fms_ge:v0.0.0
-        name: fms-ge
+	  - name: fms-ge
+        image: 1017860556361/fms_ge:v0.0.0
+        resources: 
+          limits:
+            memory: "512Mi"  
+            cpu: "300m"
+          requests:                   # request memory can't greater than limits memory
+            memory: "256Mi"  
+            cpu: "200m"
         ports:
          - containerPort: 9090 
 
@@ -31,6 +46,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: fms-ge-svc
+  namespace: fms-app
 spec: # for deployment
   selector:
       app: fms-ge
