@@ -1,0 +1,80 @@
+# ******************************************************#
+# ---           Start Mongo DB Config                ---#
+
+# Create the Screat
+---  
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mongodb-secret
+  namespace: k8s-poc1
+type: Opaque
+data:
+  mongo-username: YWRtaW4=
+  mongo-password: dXNlcjEyMw==    
+  
+# Create the Pod
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo-depl
+  namespace: k8s-poc1
+  labels:
+    app: mongodb-ns
+spec: # for deployment
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb-ns
+  template:
+    metadata:
+      labels:
+        app: mongodb-ns
+    spec: # for pod
+      containers:
+      - image: mongo
+        name: mongodb-ns
+        ports:
+         - containerPort: 27017
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom: 
+            secretKeyRef: 
+              name: mongodb-secret
+              key: mongo-username
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom: 
+            secretKeyRef: 
+              name: mongodb-secret
+              key: mongo-password 
+
+
+# Create the Internal Service  
+# '---' by this syntex can create multile documants in yaml fle 
+
+---    
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongosvc
+  namespace: k8s-poc1
+spec: # for deployment
+  selector:
+      app: mongodb-ns
+  ports:
+     - protocol: TCP
+       port: 27017
+       targetPort: 27017    
+       
+# ******************************************************#
+# ---           End Mongo DB Config                  ---#           
+ 
+
+
+#-----------------------------------------------------------------------------------------------------------# 
+#              **************************************************************************
+#-----------------------------------------------------------------------------------------------------------# 
+
+
+                                     
