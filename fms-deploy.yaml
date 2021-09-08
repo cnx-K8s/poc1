@@ -27,7 +27,7 @@ spec: # for deployment
       containers:
       - name: fms-ge
         image: 1017860556361/fms-ge:v0.3
-        args: ["-Dcom.fms.uri=123"]
+        #args: ["-Dcom.fms.uri=123"]
         resources: 
           limits:
             memory: "512Mi"  
