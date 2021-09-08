@@ -26,7 +26,7 @@ spec: # for deployment
     spec: # for pod
       containers:
       - name: fms-ge
-        image: 1017860556361/fms-ge:v0.1
+        image: 1017860556361/fms-ge:v0.3
         resources: 
           limits:
             memory: "512Mi"  
