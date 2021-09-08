@@ -27,7 +27,7 @@ spec: # for deployment
       containers:
       - name: fms-ge
         image: 1017860556361/fms-ge:v0.3
-        command: ["catalina.sh", "run", "-Dcom.fms.uri=mongodb://admin:fms135246@10.128.0.7:27017/admin?waitQueueTimeoutMS=180000&maxPoolSize=5000"]
+        command: ["-Dcom.fms.uri=mongodb://admin:fms135246@10.128.0.7:27017/admin?waitQueueTimeoutMS=180000&maxPoolSize=5000"]
         resources: 
           limits:
             memory: "512Mi"  
