@@ -38,7 +38,7 @@ spec: # for deployment
          - containerPort: 9090
         env:
           - name: com.fms.uri 
-            value: "mongodb://cnxadmin:cnxadm1n@192.168.29.213:27017/admin?waitQueueTimeoutMS=180000&maxPoolSize=5000"         
+            value: "mongodb://admin:fms135246@10.128.0.7:27017/admin?waitQueueTimeoutMS=180000&maxPoolSize=5000"         
 
 
 # Create the Internal Service  
