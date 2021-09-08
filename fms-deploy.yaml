@@ -15,7 +15,7 @@ metadata:
   labels:
     app: fms-ge
 spec: # for deployment
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: fms-ge
@@ -26,7 +26,7 @@ spec: # for deployment
     spec: # for pod
       containers:
       - name: fms-ge
-        image: 1017860556361/fms_ge:v0.0.0
+        image: 1017860556361/fms-ge:v0.1
         resources: 
           limits:
             memory: "512Mi"  
@@ -35,7 +35,10 @@ spec: # for deployment
             memory: "256Mi"  
             cpu: "200m"
         ports:
-         - containerPort: 9090 
+         - containerPort: 9090
+        env:
+          - name: com.fms.uri 
+            value: "mongodb://cnxadmin:cnxadm1n@192.168.29.213:27017/admin?waitQueueTimeoutMS=180000&maxPoolSize=5000"         
 
 
 # Create the Internal Service  
